@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
 private enum class AnimatedCircleProgress { START, END, READY }
@@ -52,6 +53,8 @@ fun AnimatedCircle(
         }
     }
 
+    val stroke = with(LocalDensity.current) { Stroke(10.dp.toPx()) }
+
     Canvas(modifier) {
         drawArc(
             color = Color.Blue,
@@ -60,7 +63,7 @@ fun AnimatedCircle(
             topLeft = Offset(-100f, -200f),
             size = Size(200f, 200f),
             useCenter = false,
-            style = Stroke(10.dp.toPx())
+            style = stroke
         )
     }
 }
