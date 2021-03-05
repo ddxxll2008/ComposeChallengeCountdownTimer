@@ -99,7 +99,8 @@ fun CounterdownTimer() {
                     timer.start()
                 }
                 isCountDownActive.value = !isCountDownActive.value
-            }) {
+            }
+        ) {
             Text(
                 text = if (isCountDownActive.value) {
                     "Stop"
