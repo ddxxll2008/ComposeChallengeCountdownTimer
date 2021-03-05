@@ -16,21 +16,34 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.example.androiddevchallenge.ui.components.AnimatedCircle
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                CounterdownTimer()
             }
         }
     }
@@ -38,9 +51,59 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp() {
-    Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+fun CounterdownTimer() {
+    val isCountDownActive = remember { mutableStateOf(false) }
+    var timerValue = remember { mutableStateOf(10000L) }
+
+    val timer = object : CountDownTimer(timerValue.value, 1000) {
+
+        override fun onTick(millisUntilFinished: Long) {
+            timerValue.value = millisUntilFinished
+        }
+
+        override fun onFinish() {
+            cancel()
+            timerValue.value = 10000L
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+//        Canvas(modifier = Modifier) {
+//            val size = Size(300f, 300f)
+//            val canvasWidth = size.width
+//            val canvasHeight = size.height
+//            drawCircle(
+//                color = Color.Blue,
+//                center = Offset(0f, y = canvasHeight * -1),
+//                radius = size.minDimension / 4
+//            )
+//        }
+        AnimatedCircle(
+            modifier = Modifier,
+            isCountDownActive.value
+        )
+        Text(
+            text = (timerValue.value / 1000).toString(),
+            style = TextStyle(color = Color.Red, fontSize = 50.sp)
+        )
+        Button(
+            onClick = {
+                if (isCountDownActive.value)
+                    timer.cancel()
+                else
+                    timer.start()
+                isCountDownActive.value = !isCountDownActive.value
+            }) {
+            Text(
+                text = if (isCountDownActive.value) "Stop" else "Start"
+            )
+        }
     }
 }
 
@@ -48,7 +111,7 @@ fun MyApp() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        CounterdownTimer()
     }
 }
 
@@ -56,6 +119,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        CounterdownTimer()
     }
 }
