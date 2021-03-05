@@ -36,7 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.ui.components.AnimatedCircle
 import com.example.androiddevchallenge.ui.theme.MyTheme
-import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,14 +93,19 @@ fun CounterdownTimer() {
         )
         Button(
             onClick = {
-                if (isCountDownActive.value)
+                if (isCountDownActive.value) {
                     timer.cancel()
-                else
+                } else {
                     timer.start()
+                }
                 isCountDownActive.value = !isCountDownActive.value
             }) {
             Text(
-                text = if (isCountDownActive.value) "Stop" else "Start"
+                text = if (isCountDownActive.value) {
+                    "Stop"
+                } else {
+                    "Start"
+                }
             )
         }
     }
