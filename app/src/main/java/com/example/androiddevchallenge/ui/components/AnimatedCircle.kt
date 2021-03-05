@@ -17,8 +17,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
-private enum class AnimatedCircleProgress { START, END, READY }
-
 @Composable
 fun AnimatedCircle(
     modifier: Modifier = Modifier,
@@ -66,5 +64,5 @@ fun AnimatedCircle(
             style = stroke
         )
     }
-    
 }
+private enum class AnimatedCircleProgress { START, END, READY }
